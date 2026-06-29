@@ -4,6 +4,8 @@ A clean, full-screen quotation for digital signage. On each load it shows one
 work-friendly quote, chosen at random, set in the "Reading room" style — a large
 Fraunces serif over a warm ink ground with a gilt byline.
 
+![Screenly Quotes App](docs/screenshot.png)
+
 Live: **https://quotes.srly.io**
 
 Part of the Screenly signage family alongside the [weather](../weather-app) and
