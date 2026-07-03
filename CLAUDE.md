@@ -50,7 +50,8 @@ absolutely as `/static/...`.
   `scripts/curate-quotes.ts` generates raw *candidates* from the MIT-licensed
   Quotable dataset; the shipped file is the verified subset. New quotes must be
   verified the same way before being added.
-- `.well-known/signage-app.json` — the [app-store manifest](../app-store/docs/app-manifest.md):
+- `.well-known/signage-app.json` — the app-store manifest (spec: see
+  `docs/app-manifest.md` in the sibling `Screenly-Labs/app-store` repo):
   the app's own machine-readable description that the store and players read.
   Quotes is a no-settings, single-shot app, so it has no `settings`, no `launch.template`,
   and no `playback` block. Served from the site root at `/.well-known/signage-app.json`

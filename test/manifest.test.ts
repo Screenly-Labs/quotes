@@ -24,7 +24,7 @@ describe('signage-app.json manifest', () => {
   })
 
   test('launches from a valid https base URL', () => {
-    expect(manifest.launch.baseUrl).toBeString()
+    expect(typeof manifest.launch.baseUrl).toBe('string')
     const url = new URL(manifest.launch.baseUrl)
     expect(url.protocol).toBe('https:')
   })
@@ -35,6 +35,8 @@ describe('signage-app.json manifest', () => {
     // A template only makes sense when settings exist (schema allOf rule).
     expect(hasTemplate).toBe(false)
     expect(hasSettings).toBe(false)
+    // Single-shot app: the manifest and docs require playback to be omitted.
+    expect('playback' in manifest).toBe(false)
   })
 
   test('tags are unique strings', () => {
