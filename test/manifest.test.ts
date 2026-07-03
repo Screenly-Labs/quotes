@@ -29,6 +29,15 @@ describe('signage-app.json manifest', () => {
     expect(url.protocol).toBe('https:')
   })
 
+  test('every URL field is an absolute https URL', () => {
+    for (const key of ['icon', 'homepage', 'source', 'support'] as const) {
+      if (!(key in manifest)) continue
+      const value = (manifest as Record<string, unknown>)[key]
+      expect(typeof value).toBe('string')
+      expect(new URL(value as string).protocol).toBe('https:')
+    }
+  })
+
   test('is a no-settings app: no launch template without settings', () => {
     const hasTemplate = 'template' in manifest.launch
     const hasSettings = 'settings' in manifest
@@ -65,6 +74,6 @@ describe('signage-app.json manifest', () => {
       'settings',
       'launch'
     ])
-    for (const key of Object.keys(manifest)) expect(allowed).toContain(key)
+    for (const key of Object.keys(manifest)) expect(allowed.has(key)).toBe(true)
   })
 })
