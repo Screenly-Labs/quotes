@@ -50,11 +50,18 @@ absolutely as `/static/...`.
   `scripts/curate-quotes.ts` generates raw *candidates* from the MIT-licensed
   Quotable dataset; the shipped file is the verified subset. New quotes must be
   verified the same way before being added.
+- `.well-known/signage-app.json` — the app-store manifest (spec: see
+  `docs/app-manifest.md` in the sibling `Screenly-Labs/app-store` repo):
+  the app's own machine-readable description that the store and players read.
+  Quotes is a no-settings, single-shot app, so it has no `settings`, no `launch.template`,
+  and no `playback` block. Served from the site root at `/.well-known/signage-app.json`
+  (GitHub Pages sends `application/json` + `Access-Control-Allow-Origin: *`).
+  `test/manifest.test.ts` guards it against the store's schema.
 
 `build.js` builds into `dist/` **without mutating sources**: vendor fonts → copy
-`index.html` + static assets → compile+minify Tailwind → bundle+minify the TS →
-stamp a sha256 content hash into `?v=` URLs → write `CNAME`. `dist/` is gitignored
-and is the artifact GitHub Pages publishes.
+`index.html` + static assets (incl. `.well-known/`) → compile+minify Tailwind →
+bundle+minify the TS → stamp a sha256 content hash into `?v=` URLs → write `CNAME`.
+`dist/` is gitignored and is the artifact GitHub Pages publishes.
 
 ## Design — "Reading room"
 
