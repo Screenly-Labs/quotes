@@ -35,7 +35,13 @@ await cp('assets/static/data', `${DIST}/static/data`, { recursive: true })
 // sends Access-Control-Allow-Origin: * on every response, satisfying the
 // manifest's Content-Type and CORS requirements.
 await cp('.well-known', `${DIST}/.well-known`, { recursive: true })
-await writeFile(`${DIST}/index.html`, injectGate(await readFile('index.html', 'utf8')))
+try {
+  await writeFile(`${DIST}/index.html`, injectGate(await readFile('index.html', 'utf8')))
+} catch (error) {
+  console.error('✗ HTML build failed')
+  console.error(error)
+  process.exit(1)
+}
 
 // 3. Tailwind -> the kit's CSS pipeline (flatten @layer, down-level to the floor).
 const cssOut = `${DIST}/static/styles/main.css`
@@ -53,11 +59,23 @@ if ((await tailwind.exited) !== 0) {
   console.error('✗ Tailwind build failed')
   process.exit(1)
 }
-await writeFile(cssOut, await processCss(await readFile(cssOut, 'utf8'), { flattenLayers: true, filename: cssOut }))
+try {
+  await writeFile(cssOut, await processCss(await readFile(cssOut, 'utf8'), { flattenLayers: true, filename: cssOut }))
+} catch (error) {
+  console.error(`✗ CSS build failed (${cssOut})`)
+  console.error(error)
+  process.exit(1)
+}
 console.log(`✓ CSS: ${cssOut}`)
 
 // 4. Client TS -> the kit's bundler (self-contained IIFE at the floor's syntax level).
-await bundleJs('assets/static/js/main.ts', `${DIST}/static/js/main.js`)
+try {
+  await bundleJs('assets/static/js/main.ts', `${DIST}/static/js/main.js`)
+} catch (error) {
+  console.error('✗ JS build failed')
+  console.error(error)
+  process.exit(1)
+}
 console.log(`✓ JS: ${DIST}/static/js/main.js`)
 
 // 5. Cache-busting: hash the built JS + CSS + data so the token changes exactly
